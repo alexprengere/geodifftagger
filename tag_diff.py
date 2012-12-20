@@ -95,7 +95,15 @@ def main():
 
     parser = argparse.ArgumentParser(description='Tag geographical diff.')
 
-    parser.epilog = 'Example: diff -u *.txt | %s' % parser.prog
+    parser.epilog = 'Example: diff -u *.txt | %s -' % parser.prog
+
+    parser.add_argument('flow',
+        help = '''Path to the file containing the data. If set to
+                       "-", the script will read the standard input
+                        instead.''',
+        type = argparse.FileType('r'),
+        default = '-'
+    )
 
     parser.add_argument('-i', '--indexes',
                         help="""
@@ -132,7 +140,7 @@ def main():
     if args['indexes'] is not None:
         KEY, LAT, LNG = args['indexes']
 
-    output(*tagger(stdin))
+    output(*tagger(args['flow']))
 
 
 if __name__ == '__main__':
