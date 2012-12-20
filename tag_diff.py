@@ -11,10 +11,10 @@ from sys import stdin
 DIFF_FLOW = True
 DELIMITER = '\t'
 
-TYPE = 0
-KEY  = 1
-LAT  = 3
-LNG  = 4
+TAG = 0
+KEY = 1
+LAT = 3
+LNG = 4
 
 
 def compare_row(row_1, row_2):
@@ -51,10 +51,7 @@ def tagger(flow):
 
         if key not in data:
             data[key] = row
-            if DIFF_FLOW:
-                tags[key] = row[TYPE]
-            else:
-                tags[key] = ''
+            tags[key] = row[TAG] if DIFF_FLOW else ''
         else:
             # We store this with duplicates
             dups[key] = row
@@ -67,10 +64,11 @@ def tagger(flow):
 
             elif non_matching_cols & set([LAT, LNG]):
                 # LAT or LNG has changed
-                if non_matching_cols.issubset(set([TYPE, LAT, LNG])):
-                    tags[key] = 'M'
-                else:
+                if non_matching_cols - set([TAG, LAT, LNG]):
+                    # Some field other than TAG, LAT, LNG was different
                     tags[key] = 'MP'
+                else:
+                    tags[key] = 'M'
 
             else:
                 # some properties changed, but not geographically
