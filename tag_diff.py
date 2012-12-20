@@ -6,7 +6,6 @@ This module read diff on stdin and tags the output.
 """
 
 import argparse
-from sys import stdin
 
 DIFF_FLOW = True
 DELIMITER = '\t'
