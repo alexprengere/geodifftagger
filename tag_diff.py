@@ -6,6 +6,10 @@ This module read diff on stdin and tags the output.
 """
 
 import argparse
+import signal
+
+signal.signal(signal.SIGPIPE, signal.SIG_DFL)
+
 
 DIFF_FLOW = True
 DELIMITER = '\t'
