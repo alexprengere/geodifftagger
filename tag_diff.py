@@ -9,6 +9,7 @@ import argparse
 
 DIFF_FLOW = True
 DELIMITER = '\t'
+VERBOSE   = False
 
 TAG = 0
 KEY = 1
@@ -47,6 +48,10 @@ def tagger(flow):
 
         row = row.rstrip().split(DELIMITER)
         key = row[KEY]
+
+        if VERBOSE:
+            print 'Processing key %8s, geo (%-13s, %-13s) from row %s' % \
+                    (key, row[LAT], row[LNG], DELIMITER.join(row))
 
         if key not in data:
             data[key] = row
@@ -90,7 +95,7 @@ def output(data, dups, tags):
 def main():
     """Main.
     """
-    global DIFF_FLOW, DELIMITER, KEY, LAT, LNG
+    global DIFF_FLOW, DELIMITER, VERBOSE, KEY, LAT, LNG
 
     parser = argparse.ArgumentParser(description='Tag geographical diff.')
 
@@ -130,11 +135,18 @@ def main():
                         """,
                         action = 'store_true')
 
+    parser.add_argument('-v', '--verbose',
+                        help="""
+                        Verbose output.
+                        """,
+                        action = 'store_true')
+
     args = vars(parser.parse_args())
     args = vars(parser.parse_args())
 
     DELIMITER = args['delimiter']
     DIFF_FLOW = not args['no_diff']
+    VERBOSE   = args['verbose']
 
     if args['indexes'] is not None:
         KEY, LAT, LNG = args['indexes']
