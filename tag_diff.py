@@ -49,10 +49,6 @@ def tagger(flow):
         row = row.rstrip().split(DELIMITER)
         key = row[KEY]
 
-        if VERBOSE:
-            print 'Processing key %8s, geo (%-13s, %-13s) from row %s' % \
-                    (key, row[LAT], row[LNG], DELIMITER.join(row))
-
         if key not in data:
             data[key] = row
             tags[key] = row[TAG] if DIFF_FLOW else ''
@@ -77,6 +73,10 @@ def tagger(flow):
             else:
                 # some properties changed, but not geographically
                 tags[key] = 'P'
+
+        if VERBOSE:
+            print 'Tagged key %8s as %3s | geo (%-13s, %-13s) from row "%s"' % \
+                    (key, tags[key], row[LAT], row[LNG], DELIMITER.join(row))
 
     return data, dups, tags
 
