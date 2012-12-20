@@ -29,7 +29,7 @@ def compare_row(row_1, row_2):
 
 
 def tag(flow):
-    """Main.
+    """Tag flow.
     """
     data = {}
     dups = {}
@@ -86,7 +86,10 @@ def output(data, dups):
             print DELIMITER.join(dups[key])
 
 
-if __name__ == '__main__':
+def main():
+    """Main.
+    """
+    global DELIMITER, KEY, LAT, LNG
 
     parser = argparse.ArgumentParser(description='Tag geographical diff.')
 
@@ -118,4 +121,9 @@ if __name__ == '__main__':
         KEY, LAT, LNG = args['indexes']
 
     output(*tag(stdin))
+
+
+if __name__ == '__main__':
+
+    main()
 
