@@ -100,6 +100,7 @@ if __name__ == '__main__':
                         Default is %s %s %s.
                         """ % (KEY, LAT, LNG),
                         nargs = 3,
+                        type = int,
                         default=None)
 
     parser.add_argument('-d', '--delimiter',
