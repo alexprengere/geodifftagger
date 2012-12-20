@@ -1,9 +1,23 @@
 
-Usage
-=====
+========
+Tag diff
+========
+
+This tool tags diff.
+
+
+Installation
+------------
+
+You may install the tool using::
+
+ % python setup install --user
+
+Example
+-------
 
 Example::
 
-    % diff -u examples/*.txt | python tag_diff.py -
-    % cat examples/1.txt | python tag_diff.py - -n
+ % diff -u examples/*.txt | tag_diff -
+ % cat examples/1.txt | tag_diff - -n
 
