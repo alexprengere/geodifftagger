@@ -8,6 +8,7 @@ This module read diff on stdin and tags the output.
 import argparse
 from sys import stdin
 
+DIFF_FLOW = True
 DELIMITER = '\t'
 
 TYPE = 0
@@ -28,11 +29,12 @@ def compare_row(row_1, row_2):
     return non_matching_cols
 
 
-def tag(flow):
+def tagger(flow):
     """Tag flow.
     """
     data = {}
     dups = {}
+    tags = {}
 
     for row in flow:
         if row.startswith('#')   or row.startswith('@@')  or \
@@ -41,13 +43,18 @@ def tag(flow):
             continue
 
         # We properly convert the +/- to a column
-        row = row[0] + '\t' + row[1:]
+        if DIFF_FLOW:
+            row = row[0] + DELIMITER + row[1:]
 
         row = row.rstrip().split(DELIMITER)
         key = row[KEY]
 
         if key not in data:
             data[key] = row
+            if DIFF_FLOW:
+                tags[key] = row[TYPE]
+            else:
+                tags[key] = ''
         else:
             # We store this with duplicates
             dups[key] = row
@@ -56,40 +63,37 @@ def tag(flow):
 
             if not non_matching_cols:
                 # Same rows, should not happen
-                print 'Weiiiird: %s' % row
+                print 'Weiiiird: %s' % DELIMITER.join(row)
 
             elif non_matching_cols & set([LAT, LNG]):
                 # LAT or LNG has changed
                 if non_matching_cols.issubset(set([TYPE, LAT, LNG])):
-                    data[key][TYPE] = 'M'
-                    dups[key][TYPE] = 'M'
+                    tags[key] = 'M'
                 else:
-                    data[key][TYPE] = 'MP'
-                    dups[key][TYPE] = 'MP'
+                    tags[key] = 'MP'
 
             else:
                 # some properties changed, but not geographically
-                data[key][TYPE] = 'P'
-                dups[key][TYPE] = 'P'
+                tags[key] = 'P'
 
-    return data, dups
+    return data, dups, tags
 
 
-def output(data, dups):
+def output(data, dups, tags):
     """Display final tagged flow.
     """
     for key, row in data.iteritems():
 
-        print DELIMITER.join(row)
+        print DELIMITER.join([tags[key]] + row)
 
         if key in dups:
-            print DELIMITER.join(dups[key])
+            print DELIMITER.join([tags[key]] + dups[key])
 
 
 def main():
     """Main.
     """
-    global DELIMITER, KEY, LAT, LNG
+    global DIFF_FLOW, DELIMITER, KEY, LAT, LNG
 
     parser = argparse.ArgumentParser(description='Tag geographical diff.')
 
@@ -113,14 +117,24 @@ def main():
                         """ % DELIMITER,
                         default = DELIMITER)
 
+    parser.add_argument('-n', '--no-diff',
+                        help="""
+                        If passed, this option indicates that we are
+                        not reading a diff, so we will not convert the
+                        first character (+/-/ ) into a column.
+                        """,
+                        action = 'store_true')
+
+    args = vars(parser.parse_args())
     args = vars(parser.parse_args())
 
     DELIMITER = args['delimiter']
+    DIFF_FLOW = not args['no_diff']
 
     if args['indexes'] is not None:
         KEY, LAT, LNG = args['indexes']
 
-    output(*tag(stdin))
+    output(*tagger(stdin))
 
 
 if __name__ == '__main__':
