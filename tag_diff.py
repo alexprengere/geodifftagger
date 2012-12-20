@@ -12,9 +12,9 @@ DELIMITER = '\t'
 VERBOSE   = False
 
 TAG = 0
-KEY = 1
-LAT = 3
-LNG = 4
+KEY = 0
+LAT = 2
+LNG = 3
 
 
 def compare_row(row_1, row_2):
@@ -142,14 +142,18 @@ def main():
                         action = 'store_true')
 
     args = vars(parser.parse_args())
-    args = vars(parser.parse_args())
+
+    if args['indexes'] is not None:
+        KEY, LAT, LNG = args['indexes']
 
     DELIMITER = args['delimiter']
     DIFF_FLOW = not args['no_diff']
     VERBOSE   = args['verbose']
 
-    if args['indexes'] is not None:
-        KEY, LAT, LNG = args['indexes']
+    if DIFF_FLOW:
+        KEY += 1
+        LAT += 1
+        LNG += 1
 
     output(*tagger(args['flow']))
 
