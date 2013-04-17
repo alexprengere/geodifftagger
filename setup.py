@@ -13,6 +13,7 @@ setup(
     author = 'Alex Prengere',
     author_email = 'alex.prengere@gmail.com',
     description = 'Tag diff between geographical files.',
+    url = 'https://github.com/alexprengere/geodifftagger',
     # Manage standalone scripts
     entry_points = {
         'console_scripts' : [
