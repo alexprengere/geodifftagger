@@ -14,7 +14,14 @@ You may install the tool using::
 Example
 -------
 
-::
+Suppose we have two tab-separated files, formatted like this (code, name, lat, lng)::
+
+ $ head -n3 examples/2.txt >> README.rst
+ MLC	Mc Alester Regonal Airport	34.882403	-95.783463
+ NDS	Sandtone Airport	-28	119.4
+ SPY	San Pedro	4.746717	-6.660817
+
+Now we do a unified diff between them::
 
  $ diff -u examples/*.txt
  --- examples/1.txt	2012-12-20 13:57:47.292866371 +0100
@@ -34,7 +41,7 @@ Example
  +AAA	HOUSTON/TX/US:SPACELAND	29.52	-95.24
   NDU	Rundu Airport	-17.956461	19.719439
 
-We want to annotate the differences in this diff to see that some of the changes were:
+We want to annotate the differences in this diff to see which changes were:
 
 + a move (M)
 + a property change (P)
@@ -59,6 +66,8 @@ We want to annotate the differences in this diff to see that some of the changes
  M	+	NDR	Nador	35.3	-2.97
   	 	NDU	Rundu Airport	-17.956461	19.719439
 
+*tag_diff* has added a column in first position where we see the tags P, M, PM, +, -, etc...
+
 Options
 -------
 
@@ -73,3 +82,4 @@ Displaying annotated differences
 You may use `GeoBases <http://opentraveldata.github.io/geobases/>`_ to display the results like this (here we color using the column H0, the first column)::
 
  $ diff -u examples/*.txt |tag_diff - |GeoBase -m -M _ _ H0
+
