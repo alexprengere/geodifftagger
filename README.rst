@@ -1,4 +1,3 @@
-========
 Tag diff
 ========
 
@@ -16,7 +15,7 @@ Example
 
 Suppose we have two tab-separated files, formatted like this (code, name, lat, lng)::
 
- $ head -n3 examples/2.txt >> README.rst
+ $ head -n3 examples/2.txt
  MLC	Mc Alester Regonal Airport	34.882403	-95.783463
  NDS	Sandtone Airport	-28	119.4
  SPY	San Pedro	4.746717	-6.660817
