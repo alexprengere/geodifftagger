@@ -11,7 +11,7 @@ setup(
     name = 'GeoDiffTagger',
     version = '0.1',
     author = 'Alex Prengere',
-    author_email = 'alex.prengere@amadeus.com',
+    author_email = 'alex.prengere@gmail.com',
     description = 'Tag diff between geographical files.',
     # Manage standalone scripts
     entry_points = {
