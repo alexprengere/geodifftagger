@@ -6,21 +6,27 @@ This tool annotates diffs from geographical files.
 Installation
 ------------
 
-You may install the tool using::
+You may install the tool using:
+
+.. code-block:: bash
 
  $ python setup install --user
 
 Example
 -------
 
-Suppose we have two tab-separated files, formatted like this (code, name, lat, lng)::
+Suppose we have two tab-separated files, formatted like this (code, name, lat, lng):
+
+.. code-block:: bash
 
  $ head -n3 examples/2.txt
  MLC	Mc Alester Regonal Airport	34.882403	-95.783463
  NDS	Sandtone Airport	-28	119.4
  SPY	San Pedro	4.746717	-6.660817
 
-Now we do a unified diff between them::
+Now we do a unified diff between them:
+
+.. code-block:: bash
 
  $ diff -u examples/*.txt
  --- examples/1.txt	2012-12-20 13:57:47.292866371 +0100
@@ -49,7 +55,7 @@ We want to annotate the differences in this diff to see which changes were:
 + a deletion (-)
 + no change (a space)
 
-::
+.. code-block:: bash
 
  $ diff -u examples/*.txt | tag_diff -
  -	-	SPX	HOUSTON/TX/US:SPACELAND	29.52	-95.24
@@ -78,7 +84,9 @@ You can customize:
 Displaying annotated differences
 --------------------------------
 
-You may use `GeoBases <http://opentraveldata.github.io/geobases/>`_ to display the results like this (here we color using the column H0, the first column)::
+You may use `GeoBases <http://opentraveldata.github.io/geobases/>`_ to display the results like this (here we color using the column H0, the first column):
+
+.. code-block:: bash
 
  $ diff -u examples/*.txt |tag_diff - |GeoBase -m -M _ _ H0
 
